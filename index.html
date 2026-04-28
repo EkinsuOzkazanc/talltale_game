@@ -191,7 +191,8 @@ input[type=number] { max-width:110px; }
 .wc-banner.half   { border-color:var(--wc-half);   color:var(--wc-half); }
 
 .game-area { display:grid; grid-template-columns:1fr 280px; gap:18px; align-items:start; }
-@media(max-width:700px){ .game-area{ grid-template-columns:1fr; } }
+.game-area > div:last-child { position:sticky; top:18px; }
+@media(max-width:700px){ .game-area{ grid-template-columns:1fr; } .game-area > div:last-child { position:static; } }
 
 .picture-panel { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; }
 .picture-panel img { width:100%; display:block; max-height:400px; object-fit:contain; background:#000; }
@@ -274,6 +275,307 @@ input[type=number] { max-width:110px; }
 .excel-status { font-size:.82rem; margin-top:8px; color:var(--success); min-height:18px; }
 .excel-format-note { font-size:.76rem; color:var(--muted); margin-top:8px; line-height:1.6; background:var(--surface2); border-radius:8px; padding:10px 12px; }
 .excel-format-note code { color:var(--accent3); font-family:monospace; }
+
+/* ═══════════════ POLISH ═══════════════ */
+
+/* ── Body: subtle noise + vignette ── */
+body {
+  background-image:
+    radial-gradient(ellipse at 50% 0%, rgba(240,192,64,0.06) 0%, transparent 55%),
+    radial-gradient(ellipse at 0% 100%, rgba(90,184,224,0.04) 0%, transparent 45%),
+    radial-gradient(ellipse at 100% 60%, rgba(224,107,90,0.04) 0%, transparent 40%);
+}
+
+/* ── Landing: atmospheric title ── */
+.logo-area h1 {
+  text-shadow:
+    0 0 80px rgba(240,192,64,0.35),
+    0 0 30px rgba(240,192,64,0.2);
+  letter-spacing: -3px;
+}
+.logo-area .tagline {
+  letter-spacing: 0.06em;
+  font-size: 0.9rem;
+}
+
+/* ── Mode cards: depth + accent bar ── */
+.mode-card {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.4), 0 4px 20px rgba(0,0,0,0.3);
+  transition: border-color .2s, transform .15s, box-shadow .2s;
+}
+.mode-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--accent);
+  opacity: 0;
+  transition: opacity .2s;
+}
+.mode-card:hover {
+  box-shadow: 0 2px 0 rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(240,192,64,0.1);
+}
+.mode-card:hover::before { opacity: 1; }
+.mode-card .icon { font-size: 2.2rem; margin-bottom: 14px; display: block; }
+.mode-card h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 8px; color: var(--text); }
+
+/* ── Buttons: physical depth ── */
+.btn-accent {
+  box-shadow: 0 4px 0 #b09020, 0 6px 16px rgba(240,192,64,0.3);
+  letter-spacing: 0.3px;
+}
+.btn-accent:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 0 #b09020, 0 10px 24px rgba(240,192,64,0.35);
+}
+.btn-accent:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #b09020, 0 2px 8px rgba(240,192,64,0.2);
+}
+.btn-ghost {
+  box-shadow: 0 2px 0 rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
+}
+.btn-ghost:hover {
+  transform: translateY(-2px);
+  border-color: var(--muted);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.3), 0 6px 18px rgba(0,0,0,0.25);
+}
+.btn-ghost:active { transform: translateY(1px); }
+
+/* ── Mic pick: drama ── */
+#mic-pick {
+  min-height: 100vh;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image:
+    radial-gradient(ellipse at 50% 30%, rgba(240,192,64,0.07) 0%, transparent 60%);
+  padding: 40px 24px;
+  max-width: 100%;
+}
+#mic-pick.active { display: flex; }
+.mic-pick-header { text-align: center; margin-bottom: 0; padding-top: 0; }
+.mic-pick-header h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--accent);
+  text-shadow: 0 0 40px rgba(240,192,64,0.25);
+  margin-bottom: 6px;
+}
+.mic-pick-header p {
+  color: var(--muted);
+  font-size: 1rem;
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+.mic-grid {
+  margin-top: 48px;
+  padding-bottom: 40px;
+  gap: 24px;
+}
+.mic-btn {
+  width: 120px; height: 168px;
+  border-radius: 24px;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.5), 0 8px 24px rgba(0,0,0,0.4);
+  transition: border-color .2s, transform .18s cubic-bezier(0.175,0.885,0.32,1.275), box-shadow .18s, background .2s;
+  background: linear-gradient(160deg, var(--surface), var(--surface2));
+}
+.mic-btn:hover {
+  transform: translateY(-8px) scale(1.04);
+  box-shadow: 0 12px 0 rgba(0,0,0,0.4), 0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(240,192,64,0.15);
+  border-color: var(--accent);
+  background: linear-gradient(160deg, var(--surface2), #1e1e30);
+}
+.mic-btn .mic-icon { font-size: 3.2rem; }
+.mic-btn .mic-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.8px;
+}
+.mic-btn.revealed {
+  box-shadow: 0 2px 0 rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.3);
+}
+.mic-btn.wc-double {
+  box-shadow: 0 4px 0 #5a30c8, 0 8px 24px rgba(167,139,250,0.3);
+}
+.mic-btn.wc-bonus {
+  box-shadow: 0 4px 0 #1a8050, 0 8px 24px rgba(52,211,153,0.3);
+}
+.mic-btn.wc-half {
+  box-shadow: 0 4px 0 #a02020, 0 8px 24px rgba(248,113,113,0.3);
+}
+
+/* ── Word prompt display: big & atmospheric ── */
+.word-prompt-display {
+  background: linear-gradient(160deg, var(--surface), var(--surface2));
+  border: 1.5px solid rgba(240,192,64,0.2);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04);
+  font-size: 2.2rem;
+  line-height: 1.3;
+  text-shadow: 0 0 40px rgba(240,192,64,0.2);
+}
+
+/* ── Picture panel ── */
+.picture-panel {
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+
+/* ── Wildcard banner ── */
+.wc-banner {
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+}
+.wc-banner.double {
+  background: rgba(167,139,250,0.07);
+  box-shadow: inset 0 0 0 2px var(--wc-double), 0 0 20px rgba(167,139,250,0.15);
+}
+.wc-banner.bonus {
+  background: rgba(52,211,153,0.06);
+  box-shadow: inset 0 0 0 2px var(--wc-bonus), 0 0 20px rgba(52,211,153,0.12);
+}
+.wc-banner.half {
+  background: rgba(248,113,113,0.06);
+  box-shadow: inset 0 0 0 2px var(--wc-half), 0 0 20px rgba(248,113,113,0.12);
+}
+
+/* ── Game badges ── */
+.badge {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 5px 13px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+.badge span { color: var(--accent); }
+
+/* ── Timer: more presence ── */
+.timer-panel {
+  background: linear-gradient(160deg, var(--surface), var(--surface2));
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 16px 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.timer-label {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+.btn-start {
+  background: linear-gradient(135deg, var(--success), #2aaa50);
+  box-shadow: 0 4px 0 #0e5020, 0 6px 16px rgba(78,203,113,0.3);
+  letter-spacing: 0.3px;
+  transition: transform .12s, box-shadow .12s;
+}
+.btn-start:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #0e5020, 0 10px 24px rgba(78,203,113,0.35);
+}
+.btn-start:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #0e5020;
+}
+.btn-thatall {
+  background: linear-gradient(135deg, var(--accent2), #c04840);
+  box-shadow: 0 4px 0 #8a2820, 0 6px 16px rgba(224,107,90,0.3);
+  letter-spacing: 0.3px;
+  transition: transform .12s, box-shadow .12s;
+}
+.btn-thatall:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #8a2820, 0 10px 24px rgba(224,107,90,0.35);
+}
+.btn-thatall:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #8a2820;
+}
+
+/* ── Word chips: more tactile ── */
+.word-chip {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: background .15s, border-color .15s, transform .1s, box-shadow .1s;
+}
+.word-chip:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,0,0,0.25); }
+.word-chip.used {
+  box-shadow: 0 0 0 1px var(--success), 0 2px 8px rgba(78,203,113,0.15);
+}
+
+/* ── Score overlay: more celebratory ── */
+.score-card {
+  background: linear-gradient(160deg, var(--surface), var(--surface2));
+  border: 2px solid rgba(240,192,64,0.25);
+  box-shadow: 0 0 0 1px var(--border), 0 24px 80px rgba(0,0,0,0.6), 0 0 60px rgba(240,192,64,0.08);
+}
+.score-card .big-score {
+  font-size: 4.5rem;
+  text-shadow: 0 0 60px rgba(240,192,64,0.4);
+  letter-spacing: -2px;
+}
+.score-card h2 {
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+/* ── Scoreboard ── */
+.scoreboard {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.sb-header {
+  background: linear-gradient(to bottom, var(--surface2), #18182a);
+}
+
+/* ── Podium ── */
+.podium-bar {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+
+/* ── Setup cards ── */
+.field-group label {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+input[type=number], input[type=text], textarea, select {
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+  transition: border-color .2s, box-shadow .2s;
+}
+input:focus, textarea:focus, select:focus {
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.15), 0 0 0 3px rgba(240,192,64,0.1);
+}
+
+/* ── howto-btn ── */
+.howto-btn {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  transition: border-color .2s, color .2s, transform .15s, box-shadow .15s;
+}
+.howto-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* ── Browse overlay ── */
+.browse-panel {
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+}
+
+/* ── Back btn ── */
+.back-btn {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  transition: border-color .2s, transform .12s;
+}
+.back-btn:hover { transform: translateY(-1px); }
+
+/* ── Scaffold display ── */
+.scaffold-display {
+  border: 1px solid rgba(90,184,224,0.2);
+  box-shadow: 0 0 0 1px rgba(90,184,224,0.05);
+}
+
 </style>
 </head>
 <body>
@@ -302,7 +604,7 @@ input[type=number] { max-width:110px; }
     </div>
   </div>
   <button class="howto-btn" onclick="showScreen('howto')">? How to Play</button>
-  <p class="landing-footer">Created by eozkazanc · TallTale v2.0 · 2026</p>
+  <p class="landing-footer">by eozkazanc · TallTale v2.0 · 2026</p>
 </div>
 
 <!-- ══════════════ HOW TO ══════════════ -->
@@ -420,7 +722,7 @@ input[type=number] { max-width:110px; }
   </div>
 
   <button class="btn btn-accent" onclick="showScreen('landing')" style="margin-top:8px">Back to Home</button>
-  <p style="color:var(--muted);font-size:.75rem;margin-top:14px">Created by eozkazanc · TallTale v2.0 · 2026</p>
+  <p style="color:var(--muted);font-size:.75rem;margin-top:14px">by eozkazanc · TallTale v2.0 · 2026</p>
 </div>
 
 <!-- ══════════════ IMAGE SETUP ══════════════ -->
@@ -545,8 +847,14 @@ input[type=number] { max-width:110px; }
   <div class="entry-mode-row">
     <button class="entry-mode-btn active" id="word-entry-manual-btn" onclick="setWordEntryMode('manual')">✏️ Enter manually</button>
     <button class="entry-mode-btn" id="word-entry-excel-btn" onclick="setWordEntryMode('excel')">📊 Upload CSV</button>
+    <button class="entry-mode-btn" id="word-entry-live-btn" onclick="setWordEntryMode('live')">⚡ Live Entry</button>
   </div>
-  <p class="help-text" style="margin-bottom:9px">Manual entry: each row has prompt, target words, and (if Assist! is on) a scaffold field. CSV upload: all columns in one file — useful for larger games.</p>
+  <p class="help-text" id="word-entry-note" style="margin-bottom:9px">Manual entry: each row has prompt, target words, and (if Assist! is on) a scaffold field. CSV upload: all columns in one file — useful for larger games.</p>
+  <div id="word-live-note" style="display:none;margin-bottom:12px;">
+    <div class="excel-format-note" style="color:#9090b8">
+      ⚡ <strong style="color:var(--accent3)">Live Entry mode.</strong> No prompts needed in advance — you'll type each prompt on the game screen before starting the timer. Target words are optional and can be added per turn.
+    </div>
+  </div>
   <div class="toggle-row">
     <label class="toggle"><input type="checkbox" id="word-global-toggle" onchange="toggleGlobalWords('word')"><span class="toggle-slider"></span></label>
     <span class="toggle-label">Same target words for all prompts</span>
@@ -712,6 +1020,15 @@ input[type=number] { max-width:110px; }
   <div class="wc-banner" id="wc-banner"></div>
   <div class="game-area">
     <div>
+      <!-- LIVE ENTRY PANEL — inside left column, shown before timer starts in live mode -->
+      <div id="live-entry-panel" style="display:none;margin-bottom:14px;">
+        <div class="global-words-area" style="background:var(--surface2);border:1.5px solid var(--accent);border-radius:12px;padding:14px 16px;">
+          <label style="font-size:.78rem;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:8px">⚡ Enter prompt for this turn</label>
+          <input type="text" id="live-prompt-input" placeholder="Type the prompt here..." style="margin-bottom:10px;font-size:1rem;" oninput="updateLivePromptDisplay()">
+          <label style="font-size:.78rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:5px">Target Words — optional (comma-separated, max 5)</label>
+          <input type="text" id="live-words-input" placeholder="e.g. describe, compare, however" oninput="updateLiveWords()">
+        </div>
+      </div>
       <div id="content-display"></div>
       <div class="scaffold-display" id="scaffold-display" style="display:none">
         <div class="sc-label">💡 Assist! — follow-up prompts</div>
@@ -770,7 +1087,7 @@ input[type=number] { max-width:110px; }
   <div class="btn-row" style="margin-top:22px">
     <button class="btn btn-accent" onclick="showScreen('landing')">Play Again</button>
   </div>
-  <p style="color:var(--muted);font-size:.75rem;margin-top:14px">Created by eozkazanc · TallTale v2.0 · 2026</p>
+  <p style="color:var(--muted);font-size:.75rem;margin-top:14px">by eozkazanc · TallTale v2.0 · 2026</p>
 </div>
 
 <script>
@@ -2762,7 +3079,15 @@ function startWordGame() {
 
   let cards = [];
 
-  if (wordEntryMode === 'excel') {
+  if (wordEntryMode === 'live') {
+    // Build placeholder cards — prompts filled in live during the game
+    document.getElementById('word-start-err').textContent = '';
+    for (let r = 0; r < rounds; r++) {
+      for (let t = 0; t < teams; t++) {
+        cards.push({ type:'word', prompt:'', words:[], scaffolds:[], round:r+1, team:t, wildcard:null, live:true });
+      }
+    }
+  } else if (wordEntryMode === 'excel') {
     const data = window._wordExcelData || [];
     if (data.length < needed) {
       document.getElementById('word-start-err').textContent = `Excel file has ${data.length} prompt(s) but ${needed} are needed.`;
@@ -2803,9 +3128,12 @@ function startWordGame() {
     }
   }
 
-  cards = shuffle(cards);
+  // In live mode don't shuffle — order is round 1 team 1, round 1 team 2, etc.
+  if (wordEntryMode !== 'live') {
+    cards = shuffle(cards);
+  }
   cards = assignWildcards(cards, 'word');
-  config = { teams, rounds, teamNames, roundTimers, mode:'word', mysteryOn, assistOn };
+  config = { teams, rounds, teamNames, roundTimers, mode:'word', mysteryOn, assistOn, liveEntry: wordEntryMode === 'live' };
   initGame(cards);
 }
 
@@ -3102,8 +3430,14 @@ function setWordEntryMode(mode) {
   wordEntryMode = mode;
   document.getElementById('word-entry-manual-btn').classList.toggle('active', mode === 'manual');
   document.getElementById('word-entry-excel-btn').classList.toggle('active', mode === 'excel');
-  document.getElementById('word-manual-area').style.display = mode === 'manual' ? 'block' : 'none';
-  document.getElementById('word-excel-area').style.display  = mode === 'excel'  ? 'block' : 'none';
+  document.getElementById('word-entry-live-btn').classList.toggle('active', mode === 'live');
+  document.getElementById('word-manual-area').style.display  = mode === 'manual' ? 'block' : 'none';
+  document.getElementById('word-excel-area').style.display   = mode === 'excel'  ? 'block' : 'none';
+  document.getElementById('word-live-note').style.display    = mode === 'live'   ? 'block' : 'none';
+  document.getElementById('word-entry-note').style.display   = mode === 'live'   ? 'none'  : 'block';
+  // Hide target words / global words toggle in live mode (handled per-turn on game screen)
+  document.getElementById('word-global-toggle').closest('.toggle-row').style.display = mode === 'live' ? 'none' : 'flex';
+  document.getElementById('word-global-words').style.display = mode === 'live' ? 'none' : '';
 }
 
 function setLibEntryMode(mode) {
@@ -3385,6 +3719,25 @@ function loadCard(idx) {
     scaffoldQs.innerHTML = '';
   }
 
+  // Live entry panel
+  const livePanel = document.getElementById('live-entry-panel');
+  if (card.live) {
+    livePanel.style.display = 'block';
+    const inp = document.getElementById('live-prompt-input');
+    const wordsInp = document.getElementById('live-words-input');
+    inp.value = '';
+    wordsInp.value = '';
+    // Show empty placeholder in content-display until teacher types
+    display.innerHTML = '<div class="word-prompt-display" style="color:var(--muted);font-style:italic;opacity:.5">Prompt will appear here as you type…</div>';
+    // Lock Start Timer until prompt is non-empty
+    document.getElementById('btn-start').disabled = true;
+    // Words panel hidden until something typed
+    panel.style.display = 'none';
+    currentWordStates = [];
+  } else {
+    livePanel.style.display = 'none';
+  }
+
   // Timer
   const sec = config.roundTimers[round - 1];
   resetTimer(sec);
@@ -3407,6 +3760,58 @@ function toggleWord(wi) {
   chip.classList.toggle('used', currentWordStates[wi]);
   updateWordBonusNote();
 }
+
+// ════════════════════════════════════════════
+// LIVE ENTRY HELPERS
+// ════════════════════════════════════════════
+function updateLivePromptDisplay() {
+  const val = document.getElementById('live-prompt-input').value.trim();
+  const display = document.getElementById('content-display');
+  if (val) {
+    display.innerHTML = '';
+    const div = document.createElement('div');
+    div.className = 'word-prompt-display';
+    div.textContent = val;
+    display.appendChild(div);
+    // Also update the card's prompt so scoring detail is correct
+    const card = gameState.cards[gameState.currentCardIdx];
+    card.prompt = val;
+    document.getElementById('btn-start').disabled = false;
+  } else {
+    display.innerHTML = '<div class="word-prompt-display" style="color:var(--muted);font-style:italic;opacity:.5">Prompt will appear here as you type…</div>';
+    document.getElementById('btn-start').disabled = true;
+  }
+}
+
+function updateLiveWords() {
+  const raw = document.getElementById('live-words-input').value;
+  const words = parseWords(raw);
+  const card = gameState.cards[gameState.currentCardIdx];
+  card.words = words;
+
+  const panel = document.getElementById('target-panel');
+  const chips = document.getElementById('word-chips');
+  chips.innerHTML = '';
+
+  if (words.length > 0) {
+    panel.style.display = 'block';
+    currentWordStates = words.map(() => false);
+    words.forEach((w, wi) => {
+      const chip = document.createElement('div');
+      chip.className = 'word-chip';
+      chip.textContent = w;
+      chip.id = `chip-${wi}`;
+      chip.onclick = () => toggleWord(wi);
+      chips.appendChild(chip);
+    });
+    updateWordBonusNote();
+  } else {
+    panel.style.display = 'none';
+    currentWordStates = [];
+    document.getElementById('word-bonus-note').textContent = '';
+  }
+}
+
 
 function updateWordBonusNote() {
   const used  = currentWordStates.filter(Boolean).length;
