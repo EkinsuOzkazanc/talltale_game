@@ -1083,7 +1083,15 @@ input:focus, textarea:focus, select:focus {
   </div>
 </div>
 
-<!-- ══════════════ SCORE OVERLAY ══════════════ -->
+<!-- ══════════════ ROUND TRANSITION OVERLAY ══════════════ -->
+<div class="score-overlay" id="round-overlay" style="display:none">
+  <div class="score-card" style="text-align:center;max-width:420px">
+    <div style="font-size:3rem;margin-bottom:8px">🎯</div>
+    <h2 id="ro-title" style="font-size:2rem;margin-bottom:6px">Round 2</h2>
+    <p id="ro-sub" style="color:var(--muted);margin-bottom:24px">Get ready — same teams, new prompts!</p>
+    <button class="btn btn-accent" onclick="dismissRoundOverlay()" style="width:100%;font-size:1rem;padding:13px">Let's go →</button>
+  </div>
+</div>
 <div class="score-overlay" id="score-overlay">
   <div class="score-card">
     <h2 id="so-team">Team 1</h2>
@@ -3012,9 +3020,7 @@ function startImageGame() {
     }
   }
 
-  cards = shuffle(cards);
   cards = assignWildcards(cards, 'img');
-
   config = { teams, rounds, teamNames, roundTimers, mode: 'image', mysteryOn, assistOn };
   initGame(cards);
 }
@@ -3143,10 +3149,7 @@ function startWordGame() {
     }
   }
 
-  // In live mode don't shuffle — order is round 1 team 1, round 1 team 2, etc.
-  if (wordEntryMode !== 'live') {
-    cards = shuffle(cards);
-  }
+  // Cards are always in round→team order, never shuffled
   cards = assignWildcards(cards, 'word');
   config = { teams, rounds, teamNames, roundTimers, mode:'word', mysteryOn, assistOn, liveEntry: wordEntryMode === 'live' };
   initGame(cards);
@@ -3398,8 +3401,6 @@ function startLibraryGame() {
     wildcard:  null
   }));
 
-  cards = shuffle(cards);
-  cards = cards.map((c, i) => ({ ...c, round: Math.floor(i / teams) + 1, team: i % teams }));
   cards = assignWildcards(cards, 'lib');
 
   config = { teams, rounds, teamNames, roundTimers, mode: 'library', mysteryOn, assistOn };
@@ -3554,7 +3555,7 @@ function initGame(cards) {
     cards,
     scores: Array.from({ length: config.teams }, () => Array(config.rounds).fill(null)),
     totals: Array(config.teams).fill(0),
-    // Track which card index is "current" — we find the next unscored card each turn
+    currentRound: 1,
   };
   buildScoreboard();
   startNextTurn();
@@ -3992,9 +3993,39 @@ function nextTurn() {
   document.getElementById('score-overlay').classList.remove('show');
   const next = findNextCard();
   if (next === null) { showFinal(); return; }
-  gameState.currentCardIdx = next;
-  if (config.mysteryOn) showMicPick();
-  else { loadCard(next); showScreen('game'); }
+
+  const nextCard = gameState.cards[next];
+  const nextRound = nextCard.round;
+
+  // Detect round transition
+  if (nextRound > gameState.currentRound) {
+    gameState.currentRound = nextRound;
+    gameState.currentCardIdx = next;
+    showRoundOverlay(nextRound);
+  } else {
+    gameState.currentCardIdx = next;
+    if (config.mysteryOn) showMicPick();
+    else { loadCard(next); showScreen('game'); }
+  }
+}
+
+function showRoundOverlay(round) {
+  document.getElementById('ro-title').textContent = `Round ${round}`;
+  document.getElementById('ro-sub').textContent = `Get ready — same teams, new prompts!`;
+  const overlay = document.getElementById('round-overlay');
+  overlay.style.display = 'flex';
+  requestAnimationFrame(() => overlay.classList.add('show'));
+}
+
+function dismissRoundOverlay() {
+  const overlay = document.getElementById('round-overlay');
+  overlay.classList.remove('show');
+  setTimeout(() => {
+    overlay.style.display = 'none';
+    const next = gameState.currentCardIdx;
+    if (config.mysteryOn) showMicPick();
+    else { loadCard(next); showScreen('game'); }
+  }, 300);
 }
 
 // ════════════════════════════════════════════
